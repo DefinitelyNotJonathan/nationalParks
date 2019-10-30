@@ -1,10 +1,7 @@
 'use strict';
 
-// put your own value below!
 const apiKey = 'IfcsBFYkZPOU1J024K3TaNhMYXtHZ7bCHqZhtxrP';
 const searchURL = 'https://developer.nps.gov/api/v1/parks';
-
-
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
@@ -12,22 +9,19 @@ function formatQueryParams(params) {
 }
 
 function displayResults(responseJson) {
-  // if there are previous results, remove them
   console.log(responseJson);
   $('#results-list').empty();
-  // iterate through the items array
-  for (let i = 0; i < responseJson.data.length; i++){
+  for (let i=0; i < responseJson.data.length; i++){
     $('#results-list').append(
       `<li><h3>${responseJson.data[i].fullName}</h3>
-      <p>${responseJson.data[i].designation}</p>
-      <img src='${responseJson.data[i].images[0].url}'>
-      <p>${responseJson.data[i].description}</p>
-      <p>${responseJson.data[i].weatherInfo}</p>
-      <p>${responseJson.data[i].addresses[0]}</p>
-      <p>${responseJson.data[i].directionsUrl}</p>
+      <p>States: ${responseJson.data[i].states}
+      <p>Designation: ${responseJson.data[i].designation}</p>
+      <p>Description: ${responseJson.data[i].description}</p>
+      <p>Weather Info: ${responseJson.data[i].weatherInfo}</p>
+      <p>Directions: ${responseJson.data[i].directionsUrl}</p>
+      <p>Website: ${responseJson.data[i].url}</p>
       </li>`
     )};
-  //display the results section
   $('#results').removeClass('hidden');
 };
 
@@ -35,7 +29,7 @@ function getParkResults(query, maxResults=10) {
   const params = {
     stateCode: query,
     limit: maxResults,
-    fields: addresses,images,
+    fields: "addresses",
     api_key: apiKey
   };
   const queryString = formatQueryParams(params)
